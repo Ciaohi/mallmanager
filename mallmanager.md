@@ -41,4 +41,11 @@
 3. git add .
 4. git commit -m "zhushi"
 5. 在代码托管平台(github)新建远程仓库
-6. git push
+6. git remote add origin git@github.com:Ciaohi/mallmanager.git
+7. git push -u origin master(之后再push 直接git push)
+
+#### 07-项目-登录-新建分支-login 组件-配置路由
+> 新建一个分支 专门写登录功能
+> git branch
+> git checkout -b dev-login
+> 新建组件+配置路由
