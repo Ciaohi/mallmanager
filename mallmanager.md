@@ -99,3 +99,33 @@ const {data,msg,status} = res.data
 
 #### 12-项目-登录-引入提示框组件
 > this.$message.waring(msg)
+
+#### 13-项目-登录-登录成功-进入home组件
+> 登录成功 -> 来到home组件
+1. js编程式导航this.$router.push({name:'home'})
+2. App.vue router-view
+3. 新建home组件
+4. 路由index.js配置路由
+
+#### 14-项目-登录-简化登录请求代码-async和await
+> 让异步代码ajax看起来像同步代码
+1. 找到异部操作有结果的代码 前面加await 同时接口异步操作的结果res
+2. 找到距离异部操作有结果的代码最近的方法 前面家async
+```js
+async handleLogin (){
+      const res = await this.$http.post('login', this.formdata)
+      /* console.log(res) */
+      const {msg, status} = res.data
+      if (status === 200) {
+        // 登录成功
+        // 1.跳转home首页
+        this.$router.push({name: 'home'})
+        // 2.提示成功
+        this.$message.success(msg)
+      } else {
+        // 不成功
+        //  1. 提示消息
+        this.$message.warning(msg)
+      }
+    }
+```
