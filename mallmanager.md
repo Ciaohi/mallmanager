@@ -49,3 +49,53 @@
 > git branch
 > git checkout -b dev-login
 > 新建组件+配置路由
+> 注意： 
+1. commit每完成一个小功能就commit一次
+2. push操作master去完成
+
+#### 08-项目-登录-引入表单主件
+
+> el-form
+1. 引入
+2. 调整标签(h2+el-button)
+> label-position="top"
+
+#### 09-项目-登录-样式调整
+> height:100%
+> 注意: div#app height:100%
+
+#### 10-项目-登录-axios 插件
+> axios不是Vue插件- Vue.use(axios)
+
+```js
+
+// 插件模块
+import axios from 'axios'
+const MyHttpServer = {}
+MyHttpServer.install = (Vue) => {
+  // 4. 添加实例方法
+  Vue.prototype.$http = axios
+}
+
+export default MyHttpServer
+
+```
+> 在main.js中导入之后Vue.use(插件名)
+> 结果: this.$http.get()
+
+#### 11-项目-登录-发送登录请求
+> Login.vue methods handleLogin()
+1. this.$http.post('login',this.formdata).then((res)=>{})
+2. 对象结构赋值 res.data
+
+```js
+const {data,msg,status} = res.data
+        if (status === 200) {
+          // 登录成功
+          // 1.跳转home首页
+          this.$router.push({name: 'home'})
+        }
+```
+
+#### 12-项目-登录-引入提示框组件
+> this.$message.waring(msg)
