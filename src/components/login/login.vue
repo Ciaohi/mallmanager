@@ -28,9 +28,11 @@ export default {
     async handleLogin () {
       const res = await this.$http.post('login', this.formdata)
       /* console.log(res) */
-      const {msg, status} = res.data
+      const {msg, status, token} = res.data
       if (status === 200) {
         // 登录成功
+        // 0.保存token
+        localStorage.setItem('token', token)
         // 1.跳转home首页
         this.$router.push({name: 'home'})
         // 2.提示成功

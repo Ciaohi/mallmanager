@@ -129,3 +129,28 @@ async handleLogin (){
       }
     }
 ```
+#### 15-项目-登录-保存 token 值
+
+> 目的:如果哟过户没登录->url直接来到home组件
+> 在登录成功时 保存正确用户的token
+```js
+ localStorage.setItem('token',data.token)
+```
+
+#### 16-项目-首页-布局容器-使用-样式调整
+> 引入布局容器
+#### 17-项目-首页-头部-样式调整
+> Layout布局
+> 行el-row
+> 列el-coL
+> 注意24栏
+
+#### 18-项目-首页-侧边栏-导航组件-文档
+> el-menu
+1. router 开启路由模式 true index==path值
+2. unique-opened是否只保持一个子菜单的展开
+
+#### 19-项目-首页-侧边栏-引入导航组件-调整
+
+> 调整el-menu
+> index值不能一样
