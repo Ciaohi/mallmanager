@@ -154,3 +154,19 @@ async handleLogin (){
 
 > 调整el-menu
 > index值不能一样
+
+#### 20-项目-首页-进入首页的权限验证
+
+> 如果没有登录过 就不能进入到home组件
+```js
+    // newVue之前自动触发
+    beforeCreate () {
+      // 获取token
+      const token = localStorage.getItem('token')
+      if (!token) {
+        // token 没有 > 登录
+        this.$router.push({name: 'login'})
+      }
+      // if token 有 > 继续渲染组件
+    } 
+```
