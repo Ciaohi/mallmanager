@@ -187,3 +187,10 @@ handleSignout (){
 2. git merge dev-login 合并分支
 3. push
 4. 新建dev-users
+
+#### 23-项目-用户管理-用户列表-新建组件-路由配置
+
+1. home.vue开启了路由模式 index值 ->path值
+2. home.vue main-> router-view
+3. 新建users.vue
+4. router/index.js 在home中children配置users的路由
