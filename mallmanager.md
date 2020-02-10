@@ -170,3 +170,20 @@ async handleLogin (){
       // if token 有 > 继续渲染组件
     } 
 ```
+
+#### 21-项目-首页-头部-推出功能
+```js
+handleSignout (){
+      // 1.清除token
+      localStorage.clear()
+      // 2.提示
+      this.$message.success('退出成功')
+      // 3.来到Login组件
+      this.$router.push({name: 'login'})
+    }
+```
+#### 22-项目-提交
+1. 切到master
+2. git merge dev-login 合并分支
+3. push
+4. 新建dev-users
