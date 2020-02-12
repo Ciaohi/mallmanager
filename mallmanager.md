@@ -239,3 +239,70 @@ handleSignout (){
  this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
 ```
 5. 发送请求
+
+
+#### 05-项目-用户管理-用户列表-渲染数据-一般数据
+1. 结构赋值 给this.userlist = res.data.data.users
+2. prop="""
+   username
+   email
+   mobile
+   create_time
+   mg_state
+   
+#### 06-项目-有用户管理-用户列表-渲染数据-日期格式处理
+1. main.js 全局过滤器 fmdata
+2.1 prop="create_time { fmtdate"  不行!
+2.2 单元格的内容只能显示文本
+```html
+  <el-table-column>
+    prop="create_time"
+    label="创建时间">
+    {{create_time | fmtdate}}        
+</el-table-column>
+```
+2.3 需要给该内容外层加容器template
+> 不同组件的数据不是共享的 独立作用域
+```html
+ <el-table-column>
+    prop="create_time"
+    label="创建时间">
+    <templte>
+       {{create_time | fmtdate}}
+    </templte>
+</el-table-column>
+```
+
+2.4 最终写法
+> slot-scope 作用： 传值
+> slot-scope的值会自动去上一级找外层标签el-table所绑定的数据userlist
+> slot-scope="scope" 此时 “scope”==uselist数组
+> scope.row是数组的每个对象
+> scope.row.create_time要用的数据
+```html
+ <el-table-column>
+    label="创建时间">
+    <templte slot-scope="scope">
+       {{scope.row.create_time | fmtdate}}
+    </templte>
+</el-table-column>
+```
+#### 07-项目-用户管理-用户列表-渲染数据-用户状态开关
+> el-switch v-model="bool"
+```html
+ <el-table-column
+        label="用户状态">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.mg_state"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </template>
+      </el-table-column>
+```
+#### 08-项目-用户管理-用户列表-渲染数据-操作
+> 操作里面不是字符串
+1. template容器 slot-scope="scoe"
+2. el-button
+> size="mini" plain
