@@ -306,3 +306,175 @@ handleSignout (){
 1. template容器 slot-scope="scoe"
 2. el-button
 > size="mini" plain
+
+#### 09-项目-用户管理-用户列表-分页组件-文档-引入
+> 该接口支持分页 url参数中有pagenum pagesize
+1. @size-change  每页显示变化时触发
+2. @current-change 当前页改变时触发
+3. current-page 设置当前页是第几页
+4. page-sizes=[2,4,6,8] 每页多少条的数据数组
+5. page-size 设置显示多少条
+6. total数据总数
+
+#### 10-项目-用户管理-用户列表-分页组件-配置数据
+
+1. current-page="pagenum"
+2. page-size=2
+3. total="total"
+
+#### 11-项目-用户管理-用户列表-分页组件-分页请求
+
+1. 每页显示条数改变 -> this.pagesize=val ->this.getUserList()
+2. 页码改变时 -> this.pagenum = val -> this.getUserList()
+
+> 希望当每页条数改变时 从第一页开始显示this.pagenum=1 -> currentPage=1
+
+#### 12-项目-项目管理-用户列表-搜索用户
+1. 给搜索输入框绑定query v-model="query"
+2. 点击搜索按钮 发送请求
+3. 一建清除 clearable
+4. 点击清除按钮 -> 重新获取数据
+```html
+ <el-input @clear="loadUserList()" clearable
+         placeholder="请输入内容"
+         v-model="query"
+         class="inputSearch">
+          <el-button @click="searchUser()" slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+```
+
+#### 13-项目-用户管理-用户列表-添加用户-显示对话框
+1. 引入对话框 > el-form
+2. 点击添加用户的按钮 ->显示对话框 this.dialogFormVisibleADD = true
+3. 配置对话框
+3.1 :model=form:{看接口文档添加用户时用哪个数据}
+3.2 dialogFormVisibleADD:flase
+3.3 el-form>el-input v-model="form.xxx
+
+#### 14-项目-用户管理-用户列表-添加用户-发送请求
+1. post this.form
+2. 关闭对话框
+3. 清空文本框this.form ={}
+4. 更新视图
+5. 提示框
+> post status === 201
+
+
+#### 16-项目-用户管理-用户列表-删除用户-打开确认框
+> this.$config().then().catch()
+1. 点击确定 -> .then的参数
+2. 点击取消 -> .catch的参数
+
+#### 17-项目-用户管理-用户列表-删除用户-处理响应
+1. 点击确定 -> 发送delete请求
+1.1 提示
+1.2 更新数据
+1.3 回到第一页
+> 注意async的位置
+```js
+this.$confirm('删除用户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        // 发送删除请求 :id -----> 用户id
+        // 1. data中userId X
+        // 2. 把userId以参数形式传递进来
+
+        const res = await this.$http.delete(`users/${userId}`)
+        console.log(res)
+        if (res.data.meta.status === 200) {
+          this.pagenum = 1
+          // 更新视图
+          this.getUserList()
+          // 提示
+          this.$message({
+            type: 'success',
+            message: res.data.meta.msg
+          })
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+```
+#### 18-项目-用户管理-用户列表-编辑用户-显示对话框
+> 点击操作中的编辑按钮 打开编辑对话框
+0. 提供该对话框显示/隐藏控制属性
+1. 找到编辑按钮@click
+2. 打开对话框
+3. 把之前添加对话框进行赋值 - 修改
+> form用的是之前添加用户时的form
+
+#### 20-扩展-git的使用
+
+1. gitbash ->指令操作
+2. gitGUI ->图形页面 ->一个能操作git的软件
+#### day-09-重点
+#### 01-项目-用户管理-用户列表-编辑用户-发送请求
+1. 点击edit编辑按钮 scope.roe
+2. 在showEditUserDia方法中 this.form=user user其实是scope.row
+> 用户名 禁用
+
+#### 02-项目-用户管理-用户列表-编辑用户-发送请求
+
+1. 找到对话框的确定按钮 -> editUser() -> 发送请求
+> this.form =user
+> id -> this.form.id
+> 先点编辑 再点添加 -> 打开添加对话框之前 this.form={}
+
+#### 03-项目-用户管理-用户列表-修改用户状态
+
+1. 找到开关 @change="changeMgState(scope.row)"
+2. changeMgState(){发送put请求}
+> users/:uId/state/:type uid用户id
+
+
+#### 04-项目-用户管理-用户列表-分配角色-功能演示
+1. 点击按钮 -> 打开对话框
+2. 对话框 中有下拉框
+3. 修改当前用户的角色
+4. 5个角色名来源于请求
+> 每个角色的权限是不同的
+
+#### 05-项目-用户管理-用户列表-分配角色-显示对话框
+1. 点击操作中的按钮 -> 打开对话框
+2. 引入对话框(有下拉框)
+> 下拉框的特性： 如果select绑定的数据的值和option的value值一样 此时显示的是该option的label值
+3. 把option分成了两类 请选择(-1)和v-for遍历option
+4. data提供了el-select的v-model所绑定的数据currRoleId =-1
+
+#### 06-项目-用户管理-用户列表-分配角色-显示对话框-下拉框
+> el-select和el-option
+1. 当改变label时 -> 该label显示 -> 改变了value -> el-select v-model绑定的数据 自动关联->
+
+#### 07-项目-用户管理-用户列表-分配角色-显示当前用户角色
+1. 通过请求获取所有角色 roles
+2. v-for el-option :label="item.roleName" :value="item.id"
+3. 通过请求获取当前用户的role_id
+4. 给el-select 中v-model绑定的数据赋值 this.currRoleId =res.data.data.role_id
+> rid接口文档的参数名是role_id
+
+#### 08-项目-用户管理-用户列表-分配角色-修改用户角色
+1. 通过视图操作->修改了label->value值变化->el-select v-model绑定的数据变化
+2. currrRoleId
+
+> 在setRole 方法中要使用用户id  在data声明currUserId:-1
+3. 在showSetUserRoleDia(){this.currUserId=user.id}
+
+```js
+async setRole () {
+      // users/:id/role
+      // :id 要修改的用户的id值
+      // 请求体中rid修改的新值角色id
+      const res = await this.$http.put(`users/${this.currUserId}/role`, {
+        rid: this.currRoleId,
+        curs: this.currState
+      })
+      console.log(res)
+      // 关闭对话框
+      this.dialogFormVisibleRol = false
+    },
+```
