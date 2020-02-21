@@ -478,3 +478,183 @@ async setRole () {
       this.dialogFormVisibleRol = false
     },
 ```
+#### 09-项目-用户管理-用户列表-合并分支-推送
+
+1. git add .
+2. git commit -m "注释"
+3. git branch
+4. git checkout master
+5. git merge dev-users
+6. git push
+
+#### 10-项目-权限管理-权限列表-新建组件-路由配置
+1. 权限管理
+1.1 角色列表
+> 展开行+树形结构
+>1.2 权限列表
+
+#### 10-项目-权限管理-权限列表-新建组件-路由配置
+1. 新建right.vue
+2. home.vue改标识
+3. 配置路由
+
+#### 11-项目-权限管理-权限列表-自定义面包屑组件
+> 好多组件都有面包->二次封装了面包屑组件
+1. 新建.vue文件
+2. 在自定义组件中提供数据 level1 llevel2 -> props:[]
+3.main.js 引入
+4. Vue.component(MyBread.name,MyBread)
+
+#### 12-项目-权限管理-权限列表-获取权限列表数据
+> 除了登录之外的所有请求 都需要设置头部信息
+> typd参数 值list或者tree
+
+#### 13-项目-权限管理-权限列表-axios-拦截器-设置请求头
+
+> 除了登录之外的所有请求 都需要设置头部信息
+> 在请求发起之前要添加头部
+> 请求拦截器 config.header
+> 响应拦截器 (目前没使用)
+
+
+#### 14-项目-权限列表-表格展示
+> 引入el-table 绑定数据 rightlist(authName path level)
+
+#### 15-项目-权限管理-权限列表-表格展示-层级显示
+> Level==='0' 一级
+1. template slot-scope="scope"
+2. v-if ="scope.row.level"==='0'" 一级
+
+#### 16-项目-权限管理-权限列表-表格展示-固定表头
+
+>给el-table设置固定高
+> overflow:auto
+
+#### 17-项目-权限管理-角色列表-新建组件-配置路由
+1. 新建role.vue组件
+2. 配置路由
+
+#### 18-项目-权限管理-角色列表-面包屑和添加按钮
+ 
+1. 自定义面包屑
+2. 添加按钮 
+ 
+#### 19-项目-权限管理-角色列表-获取角色列表数据
+
+1. 发送请求 this.$http.get(`roles`)
+
+#### 20-项目-权限管理-角色列表-表格展示
+> 将users.vue中的表格进行复制 修改
+1. :data="rolelist"
+2. roleName
+3. roleDesc
+4. 操作
+
+#### 21-项目-权限管理-角色列表-表格展示-展开功能分析
+1. type="expand"
+2. template > 该角色的权限(三级)
+3. 页面布局如果是行列问题 -> for循环 -> v-for el-tag
+
+#### 22-项目-权限管理-角色列表-表格展示-展开行-一级权限
+1. 分析数据rolelist > 每个对象中的children中zuthName
+2. 布局 一行>(列A>(el-tag)+列B>(一行el-row>两列(el-colA)el-tag+e1-colB>el-tag))
+3. 一级权限展示 v-for 最外层的el-row scope.row.children
+
+### day-10-重点
+
+#### 01-项目-权限管理-角色列表-表格展示-展开行-二级权限
+
+> 在第一列(一级权限)的基础上: 展示二级权限
+```html
+ <el-row v-for="(item2,i) in item1.children" :key="i">
+                  <el-col :span="4">
+                    <el-tag>{{item2.authName}}</el-tag>
+                  </el-col>
+                  <el-col :span="20"></el-col>
+                </el-row>
+``` 
+#### 02-项目-权限管理-角色列表-表格展示-展开行-三级权限
+
+> 在二级权限展示完毕基础上
+> v-for遍历的是item2.children el-tag
+
+### 03-项目-权限管理-角色列表-表格展示-展开行-三级权限
+
+1. el-tag颜色 type="success"
+2. closeable
+3. <i class=""></i> 图标
+
+#### 04-项目-权限管理-角色列表-表格展示-展开行-处理无权限的提示
+> 角色无权限时 提示
+> <span v-if ="scope.row.children.length===0">未分配权限</span>
+
+#### 05-项目-权限管理-角色列表-表格展示-展开行-取消权限
+
+> 点击x按钮 取消该角色的权限
+1. el-tag @close="deleRight(scope.row.id,item.id)"
+2. deleRight(roleId,rightId){发送请求}
+3. this.$http.delete(`roles/${roleId}/rights/${rightId}`)
+4. 更新整个视图
+> 删除成功 返回了该角色的剩余权限
+
+#### 06-项目-权限管理-角色列表-表格展示-展开行-取消权限-优化
+
+>删除成功->更新整个表格_>没必要
+>删除成功 返回了该角色的剩余权限 
+>删除成功 -> 更新了当前角色的children
+
+#### 07-项目-权限管理-角色列表-表格展示-修改权限-显示对话框
+> 点击操作的check按钮 -> 打开对话框
+1. 提供对话框
+2. check按钮 @click="showSetRightDia(scope.row)"
+
+#### 08-项目-权限管理-角色列表-表格展示-修改权限-树形结构-文档分析
+>el-tree
+```js
+树形结构
+      data->数据源[]
+          show-checkbox -> 选择框
+          node-key 每个节点的唯一标识 通常是data数据源中key名id
+          default-expanded-keys 默认展开 [要展开的节点的id]
+          default-checked-keys [要选择的节点的id]
+          props 配置项 {label,children}
+          lable节点的文字标题和chiledren节点的子节点
+          值都来源于data绑定的数据源中的该数据的key名 'Label' 和'children'
+```
+
+#### 09-项目-权限管理-角色列表-表格展示-修改权限-树形结构-配置数据
+1. data中treelist
+2  打开对话框时 获取树形结构的权限列表数据
+> const res=await this.$htt.get(`rights.tree`)
+> this.treelist = res.data.data
+3. el-tree :data="treelist"
+4. el-tree node-key="id"
+5.:props={label:`authName`,children:`children`}
+>默认展开和选中
+#### 10-项目-权限管理-角色列表-表格展示-修改权限-树形结构-展开所有项
+> el-tree default-expand-all
+> default-expanded-keys = [所有权限的id] for嵌套
+
+#### 11-项目-权限管理-角色列表-表格展示-修改权限-树形结构-显示角色拥有权限
+> el-tree default-checked-key="[]"
+1. data arrcheck
+2. role for嵌套 获取最里层叶子节点id 
+3. this.arrcheck = arrtemp2
+
+> 只给最里层
+
+#### 12-项目-权限管理-角色列表-表格展示-修改权限-树形结构-分配权限-功能分析
+1. 点击对话框确定 发送请求
+> roleId rid
+2. roldId 在打开对话框的方法中 this.roleId=role.id
+3.
+3.1 获取全选的节点id数组 getCheckedKeys
+3.2 获取半选的节点id数组 getHalfCheckedkeys
+4. 在js中调用el-tree的js方法
+4.1 给el-tree设置ref
+4.2 this.$refs.ref的值tree.js方法(3.1和3.2的方法名)
+4.3 返回两个数组arr1和arr2
+5. ES6 张开运算符
+> let arr = [...arr1,...arr2]
+6. this.$http.post(`roles/${this.currRoleId}/rights`,{rids:arr})
+7. 关闭对话框+更新视图

@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import ElementUI from 'element-ui'
+// MyBread其实是组件选项所在的对象{template:'',data等}
+import MyBread from '@/components/custom/myBread.vue'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/reset.css'
 import router from './router'
@@ -14,6 +16,8 @@ Vue.use(MyHttpServer)
 
 Vue.config.productionTip = false
 
+// 全局自定义组件
+Vue.component(MyBread.name, MyBread)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

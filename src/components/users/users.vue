@@ -341,8 +341,9 @@ export default {
       // pagenum 当前页码 不能为空
       // pagesize 每页显示条数 不能为空
       // 需要授权的API,必须在请求头中使用Authorization 字段提供token 令牌
-      const AUTH_TOKEN = localStorage.getItem('token')
-      this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
+      /*    const AUTH_TOKEN = localStorage.getItem('token')
+      this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN */
+
       const res = await this.$http.get(
         `users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
       // eslint-disable-next-line no-unused-vars
