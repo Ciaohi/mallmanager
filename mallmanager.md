@@ -658,3 +658,63 @@ async setRole () {
 > let arr = [...arr1,...arr2]
 6. this.$http.post(`roles/${this.currRoleId}/rights`,{rids:arr})
 7. 关闭对话框+更新视图
+
+#### 14-项目-首页-侧边栏-动态导航
+>get(`menus`)获取导航的所有数据
+1. order
+2. path标识
+3. children
+4. v-for
+> 在写之后的路由配置时 path不能随便写
+#### 15-项目-效果演示-不同角色用户登录-显示对应权限
+> 每个角色有不同的权限
+1. 新建用户 分配角色
+2. 回到登录页 登录新用户 ->token
+3. 渲染home组件的侧边栏时 使用header中的token
+4. 发送getMenus() 也会使用header
+
+#### 16-项目-不同角色用户登录-显示对应权限-导航守卫
+1. 在home.vue中判断token很麻烦
+2. 导航守卫
+2,1 路由配置生效前 先来到路由守卫的cb
+2.2 to 要去的路由配置 from当前的路由配置
+2.3 next() 让to的路由配置继续生效
+
+```js
+router.beforeEach((to, from, next) => {
+  // to from next
+  // console.log(to, from)
+  // 如果要去的是登录 -> next()
+  if (to.path === '/login') {
+    next()
+  } else {
+    // 如果要去的不是登录
+    // 判断token
+    const token = localStorage.getItem('token')
+    if (!token) {
+      // 如果token没有 -> login
+      // 提示
+      Message.warning('请先登录')
+      router.push({
+        name: 'login'
+      })
+      return
+    }
+    // 如果有 -> next()
+    next()
+  }
+})
+```
+#### 17-项目-权限管理-合并分支-推送-新建分支
+1. git status
+2. git add .
+3. git commit -m ""
+4. git checkout master
+5. git branch
+6. git status
+7. git push
+#### 18-项目-商品管理-功能演示
+1. 商品列表-添加商品
+2. 分类参数
+2.1 动态参数
+2.2 静态参数

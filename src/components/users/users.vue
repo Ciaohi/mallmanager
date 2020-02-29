@@ -221,6 +221,9 @@ export default {
       // 获取当前用户的角色id-role_id
       const res = await this.$http.get(`users/${user.id}`)
       this.currRoleId = res.data.data.role_id
+      if (this.currRoleId === 0) {
+        this.currRoleId = -1
+      }
       // console.log(res)
       // res.data.data.role_id
       this.dialogFormVisibleRol = true
